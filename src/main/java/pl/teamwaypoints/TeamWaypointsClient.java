@@ -184,4 +184,33 @@ public class TeamWaypointsClient implements ClientModInitializer {
         int h = ctx.getScaledWindowHeight();
         double tan = Math.tan(Math.toRadians(mc.options.getFov().getValue()) / 2.0);
         double aspect = (double) w / h;
-        String dim = mc.world.getRegistryKey().getValue().toStrin
+                String dim = mc.world.getRegistryKey().getValue().toString();
+
+        for (Waypoint wp : WAYPOINTS.values()) {
+            if (!wp.dim().equals(dim)) continue;
+            double dx = wp.x() - cp.x;
+            double dy = wp.y() + 2.2 - cp.y;
+            double dz = wp.z() - cp.z;
+            double z = dx * fx + dy * fy + dz * fz;
+            if (z <= 0.1) continue;
+            double x = dx * rx + dy * ry + dz * rz;
+            double y = dx * ux + dy * uy + dz * uz;
+
+            int sx = (int) (w / 2.0 * (1 + x / (z * tan * aspect)));
+            int sy = (int) (h / 2.0 * (1 - y / (z * tan)));
+            sx = Math.max(20, Math.min(w - 20, sx));
+            sy = Math.max(20, Math.min(h - 30, sy));
+
+            double dist = Math.sqrt((wp.x() - cp.x) * (wp.x() - cp.x)
+                    + (wp.y() - cp.y) * (wp.y() - cp.y)
+                    + (wp.z() - cp.z) * (wp.z() - cp.z));
+            String txt = (int) Math.round(dist) + "m";
+
+            // tlo pod glowa
+            ctx.fill(sx - 9, sy - 9, sx + 9, sy + 9, 0xAA000000);
+            PlayerSkinDrawer.draw(ctx, skin(mc, wp.id()), sx - 8, sy - 8, 16);
+            int tw = mc.textRenderer.getWidth(txt);
+            ctx.drawText(mc.textRenderer, txt, sx - tw / 2, sy + 11, 0xFFFFFFFF, true);
+        }
+    }
+}

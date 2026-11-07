@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "teamwaypoints",
+  "version": "1.0.0",
+  "name": "Team Waypoints",
+  "description": "Shared team waypoints with player heads and distance.",
+  "authors": ["you"],
+  "environment": "client",
+  "entrypoints": {
+    "client": ["pl.teamwaypoints.TeamWaypointsClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.4",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
